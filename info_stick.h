@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_info_stick.h"
+#include <QString>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Info_stickClass; };
@@ -17,10 +18,9 @@ public:
 	Info_stick(QWidget* parent = nullptr);  //Constructor
 	~Info_stick();                          //Destructor
 
-	void collectSystemInfo();				//Function to collect system information
-	void collectStorageHealth();			//Function to collect storage health information
-	void generateReport();					//HTML/PDF report generation function
 private:
 	Ui::Info_stickClass* ui;				//Pointer to the UI class
+	QString collectSystemInfo();			//Function to collect system information
+	void displaySystemInfo();				//Function to display system information in the UI
 };
 
