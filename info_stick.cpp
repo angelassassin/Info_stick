@@ -11,19 +11,26 @@
 #endif
 
 Info_stick::Info_stick(QWidget *parent)
-	: QMainWindow(parent)                   //Call the parent class constructor
+	: QMainWindow(parent)                   //Call the base class constructor with parent widget
     , ui(new Ui::Info_stickClass()) 
 {
-	ui->setupUi(this);                      //initialize the UI
-	displaySystemInfo();					//app startup collect and display system info
-}
+	//initialize the UI
+	ui->setupUi(this);                      
+
+	//app startup collect and display system info
+	displaySystemInfo();					
+
+	//connect refresh button signal to displaySystemInfo slot
+	//calls displaySystemInfo() when refreshButton is clicked
+	connect(ui->refreshButton, &QPushButton::clicked, this, &Info_stick::displaySystemInfo);
+}	
 
 Info_stick::~Info_stick()					//Destructor
 {
     delete ui;
 }
 
-QString Info_stick::collectSystemInfo()		//Function to collect system information
+QString Info_stick::collectSystemInfo()		//Function definition to collect system information
 {
 	QString info;
 	QTextStream stream(&info);
@@ -51,7 +58,6 @@ QString Info_stick::collectSystemInfo()		//Function to collect system informatio
 	stream << "\n----------Storage Information----------\n";
 	QList<QStorageInfo> storages = QStorageInfo::mountedVolumes();
 	for (const QStorageInfo &storage : storages) {
-		stream << "Device: " << storage.device() << "\n";
 		stream << "Root Path: " << storage.rootPath() << "\n";
 		stream << "File System Type: " << storage.fileSystemType() << "\n";
 		stream << "Total Size: " << (storage.bytesTotal() / (1024 * 1024 * 1024)) << " GB\n";
